@@ -266,8 +266,8 @@ input,select{min-height:var(--tap);font-size:16px!important;max-width:100%}
     <div class="progress-text" id="missionText">0 / 3마리 · 날짜가 바뀌면 새 목표가 시작돼요</div>
   </section>
 
-  <h2 class="section-title">🐟 남애항·인근 해역 어종 도감 <span id="bookProgress" class="section-count">0 / 21</span></h2>
-  <div class="auction-note" style="margin-bottom:8px">남애항 방파제 자료, 인근 포인트 자료, 동해안 참고 어종을 구분했습니다. 모든 종이 남애항에서 실제로 잡힌다는 뜻은 아닙니다. 카드를 눌러 근거 구분을 확인하세요.</div>
+  <h2 class="section-title">🐟 남애항 대표 어종·인근 해역 도감 <span id="bookProgress" class="section-count">0 / 21</span></h2>
+  <div class="auction-note" style="margin-bottom:8px">대표 낚시 어종은 남애항 방파제 대상어종 안내에서 확인되는 가자미·양미리·광어·볼락·우럭·감성돔·학꽁치를 중심으로 구성했습니다. 노래미는 자료의 일반명과 게임의 쥐노래미를 동일 종으로 단정하지 않고 별도 참고로 표시합니다. 나머지는 인근 포인트 또는 동해안 참고 어종이며 남애항 조과를 보장하지 않습니다. <a href="https://www.bfg-fishing.com/fishing-spots/yangyang-namae-breakwater" target="_blank" rel="noopener noreferrer">남애항 방파제 대상어종 자료</a> · <a href="https://www.thenaka.kr/area/namae" target="_blank" rel="noopener noreferrer">남애항 인근 포인트 자료</a></div>
   <div id="fishBook" class="grid"></div>
 
   <h2 class="section-title">🎒 내 물고기 가방</h2>
@@ -306,18 +306,18 @@ input,select{min-height:var(--tap);font-size:16px!important;max-width:100%}
 <script>
 "use strict";
 const fishData = [
- {name:"가자미",emoji:"🐟",weight:18,price:18,rarity:"흔함"},
- {name:"양미리",emoji:"🐟",weight:13,price:22,rarity:"흔함"},
- {name:"광어",emoji:"🐠",weight:8,price:55,rarity:"보통"},
+ {name:"가자미",emoji:"🐟",weight:30,price:18,rarity:"흔함"},
+ {name:"양미리",emoji:"🐟",weight:24,price:22,rarity:"흔함"},
+ {name:"광어",emoji:"🐠",weight:16,price:55,rarity:"보통"},
  {name:"문어",emoji:"🐙",weight:6,price:90,rarity:"희귀"},
  {name:"오징어",emoji:"🦑",weight:10,price:38,rarity:"보통"},
  {name:"쥐노래미",emoji:"🐠",weight:9,price:32,rarity:"보통"},
- {name:"볼락",emoji:"🐟",weight:8,price:35,rarity:"보통"},
- {name:"우럭",emoji:"🐡",weight:8,price:42,rarity:"보통"},
- {name:"감성돔",emoji:"🐟",weight:4,price:115,rarity:"희귀"},
+ {name:"볼락",emoji:"🐟",weight:15,price:35,rarity:"보통"},
+ {name:"우럭",emoji:"🐡",weight:15,price:42,rarity:"보통"},
+ {name:"감성돔",emoji:"🐟",weight:12,price:115,rarity:"희귀"},
  {name:"농어",emoji:"🐠",weight:4,price:105,rarity:"희귀"},
  {name:"참돔",emoji:"🐟",weight:5,price:58,rarity:"보통"},
- {name:"학꽁치",emoji:"🐟",weight:6,price:40,rarity:"보통"},
+ {name:"학꽁치",emoji:"🐟",weight:12,price:40,rarity:"보통"},
  {name:"고등어",emoji:"🐟",weight:7,price:36,rarity:"보통"},
  {name:"전갱이",emoji:"🐠",weight:6,price:34,rarity:"보통"},
  {name:"삼치",emoji:"🐟",weight:3,price:125,rarity:"희귀"},
@@ -509,27 +509,27 @@ const fishFacts={
 };
 // 남애항 어종 근거 구분: 항구·인근 포인트 자료와 직접 조과 기록을 구분합니다.
 const fishLocalStatus={
- "가자미":{label:"남애항 방파제 대상어종 자료",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
- "양미리":{label:"남애항 방파제 대상어종 자료",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
- "광어":{label:"남애항 방파제 대상어종 자료",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
- "쥐노래미":{label:"남애항 방파제 대상어종 자료",level:"core",source:"BFG의 노래미 대상어종 안내"},
- "볼락":{label:"남애항 방파제 대상어종 자료",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
- "우럭":{label:"남애항 방파제 대상어종 자료",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
- "감성돔":{label:"남애항 방파제 대상어종 자료",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
- "학꽁치":{label:"남애항 방파제 대상어종 자료",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
- "문어":{label:"남애항 주변 포인트 자료",level:"nearby",source:"한국낚시포인트 남애항 대상어종 안내"},
- "양태":{label:"남애항 주변 포인트 자료",level:"nearby",source:"한국낚시포인트 남애항 대상어종 안내"},
- "농어":{label:"남애항 주변 포인트 자료",level:"nearby",source:"한국낚시포인트 남애항 대상어종 안내"},
- "무늬오징어":{label:"남애항 주변 포인트 자료 · 계절 조과 기록",level:"nearby",source:"한국낚시포인트의 9~11월 조과 기록"},
- "붕장어":{label:"남애항 인근 남측 갯바위 자료",level:"nearby",source:"더나까 남애항 남측 갯바위 대상어종 안내"},
+ "가자미":{label:"남애항 대표 낚시 어종",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
+ "양미리":{label:"남애항 대표 낚시 어종",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
+ "광어":{label:"남애항 대표 낚시 어종",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
+ "볼락":{label:"남애항 대표 낚시 어종",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
+ "우럭":{label:"남애항 대표 낚시 어종",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
+ "감성돔":{label:"남애항 대표 낚시 어종",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
+ "학꽁치":{label:"남애항 대표 낚시 어종",level:"core",source:"BFG 남애항 방파제 대상어종 안내"},
+ "쥐노래미":{label:"인근 포인트 노래미류 자료 · 종 구분 주의",level:"nearby",source:"남애항 인근 포인트 자료에는 노래미로 기재되어 있어 쥐노래미와 동일 종으로 단정하지 않음"},
+ "문어":{label:"남애항 인근 포인트 참고 어종",level:"nearby",source:"한국낚시포인트 남애항 대상어종 안내"},
+ "양태":{label:"남애항 인근 포인트 참고 어종",level:"nearby",source:"한국낚시포인트 남애항 대상어종 안내"},
+ "농어":{label:"남애항 인근 포인트 참고 어종",level:"nearby",source:"한국낚시포인트 남애항 대상어종 안내"},
+ "무늬오징어":{label:"남애항 인근 포인트 참고 어종 · 계절 기록",level:"nearby",source:"한국낚시포인트의 9~11월 조과 기록"},
+ "붕장어":{label:"남애항 인근 남측 갯바위 참고 어종",level:"nearby",source:"더나까 남애항 남측 갯바위 대상어종 안내"},
  "오징어":{label:"동해안 참고 어종 · 남애항 직접 근거 미확인",level:"unverified",source:"남애항 개별 대상어종 근거를 확인하지 못함"},
  "참돔":{label:"동해안 참고 어종 · 남애항 직접 근거 미확인",level:"unverified",source:"남애항 개별 대상어종 근거를 확인하지 못함"},
  "고등어":{label:"동해안 참고 어종 · 남애항 직접 근거 미확인",level:"unverified",source:"남애항 개별 대상어종 근거를 확인하지 못함"},
  "전갱이":{label:"동해안 참고 어종 · 남애항 직접 근거 미확인",level:"unverified",source:"남애항 개별 대상어종 근거를 확인하지 못함"},
  "삼치":{label:"동해안 참고 어종 · 남애항 직접 근거 미확인",level:"unverified",source:"남애항 개별 대상어종 근거를 확인하지 못함"},
  "전어":{label:"동해안 참고 어종 · 남애항 직접 근거 미확인",level:"unverified",source:"남애항 개별 대상어종 근거를 확인하지 못함"},
- "전복":{label:"남애항 낚시 대상어종 근거 미확인",level:"unverified",source:"게임의 해양생물 콘텐츠로 유지하며 현지 조과 어종으로 단정하지 않음"},
- "가리비":{label:"남애항 낚시 대상어종 근거 미확인",level:"unverified",source:"게임의 해양생물 콘텐츠로 유지하며 현지 조과 어종으로 단정하지 않음"}
+ "전복":{label:"게임 내 해양생물 참고 콘텐츠 · 남애항 낚시 대상어종 근거 미확인",level:"unverified",source:"현지 낚시 대상어종으로 단정하지 않음"},
+ "가리비":{label:"게임 내 해양생물 참고 콘텐츠 · 남애항 낚시 대상어종 근거 미확인",level:"unverified",source:"현지 낚시 대상어종으로 단정하지 않음"}
 };
 // 라이선스 확인된 실제 어종 사진만 사용합니다.
 // 원본 파일·저작자·라이선스 페이지를 함께 기록하고, 사진이 실패하면 내장 SVG로 대체합니다.
