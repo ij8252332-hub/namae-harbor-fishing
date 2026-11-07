@@ -507,65 +507,20 @@ const fishFacts={
  "전복":["Haliotis discus hannai","바위 해안·해조류 주변","한쪽으로 낮고 둥근 껍데기에 여러 개의 구멍이 나 있어요.","바위에 붙어 미역과 다시마 같은 해조류를 먹어요.","껍데기는 보통 수 cm에서 10cm 이상까지 자라요."],
  "가리비":["Patinopecten yessoensis 등","모래·자갈 바닥","부채 모양의 방사형 무늬가 있는 두 장의 껍데기를 가져요.","물속의 플랑크톤을 걸러 먹는 조개류예요.","종에 따라 껍데기 폭이 수 cm에서 20cm 안팎이에요."]
 };
-// 도감 상세 화면에서는 위키백과에 등록된 실제 어종 사진을 우선 불러오고,
-// 네트워크/사진 로딩에 실패하면 기존 HTML 내장 SVG 일러스트를 그대로 보여줍니다.
-const fishPhotoPages={
- "가자미":"Japanese flounder",
- "양미리":"Hypoptychus dybowskii",
- "광어":"Japanese flounder",
- "문어":"Common octopus",
- "오징어":"Japanese flying squid",
- "쥐노래미":"Fat greenling",
- "볼락":"Sebastes inermis",
- "우럭":"Korean rockfish",
- "감성돔":"Blackhead seabream",
- "농어":"Japanese sea bass",
- "참돔":"Red seabream",
- "학꽁치":"Japanese halfbeak",
- "고등어":"Chub mackerel",
- "전갱이":"Japanese jack mackerel",
- "삼치":"Japanese Spanish mackerel",
- "전어":"Dotted gizzard shad",
- "양태":"Bartail flathead",
- "무늬오징어":"Bigfin reef squid",
- "붕장어":"Whitespotted conger",
- "전복":"Disk abalone",
- "가리비":"Yesso scallop"
-};
+// 대회 시연용 저작권 안전 모드:
+// 개별 사진의 저작자·원본·라이선스를 검증하지 않은 외부 사진은 사용하지 않습니다.
+// 도감 상세 화면은 게임에 내장된 SVG 일러스트만 표시하며 네트워크 사진 요청을 하지 않습니다.
 const fishPhotos={};
 let fishPhotoRequest=0;
 function fishFallbackMarkup(f){
- return `<div class="detail-photo-missing" style="height:190px">${fishArt(f)}<div>${f.name} 내장형 일러스트 · 실제 사진을 불러오지 못하면 표시됩니다.</div></div>`;
+ return `<div class="detail-photo-missing" style="height:190px">${fishArt(f)}<div>${f.name} · 게임 내장 SVG 일러스트</div></div>`;
 }
-async function loadFishRealPhoto(f, requestId){
+function loadFishRealPhoto(f, requestId){
  const host=$("fishDetailPhoto");
  if(!host || requestId!==fishPhotoRequest)return;
- const cached=fishPhotos[f.name];
- if(cached){
-  host.innerHTML=`<img src="${cached}" alt="${f.name} 실제 사진" style="width:100%;height:190px;object-fit:contain;border-radius:12px;background:#eaf2f4" onerror="this.parentElement.innerHTML=fishFallbackMarkup(fishData.find(x=>x.name==='${f.name}'))">`;
-  return;
- }
- const page=fishPhotoPages[f.name];
- if(!page)return;
- try{
-  const response=await fetch("https://en.wikipedia.org/api/rest_v1/page/summary/"+encodeURIComponent(page),{headers:{"Accept":"application/json"}});
-  if(!response.ok)throw new Error("photo source unavailable");
-  const data=await response.json();
-  const photo=data.thumbnail?.source || data.originalimage?.source;
-  if(!photo)throw new Error("no photo");
-  const probe=new Image();
-  probe.onload=()=>{
-   if(requestId!==fishPhotoRequest || !$("fishDetailPhoto"))return;
-   fishPhotos[f.name]=photo;
-   $("fishDetailPhoto").innerHTML=`<img src="${photo}" alt="${f.name} 실제 사진" style="width:100%;height:190px;object-fit:contain;border-radius:12px;background:#eaf2f4">`;
-   const credit=$("fishPhotoCredit");
-   if(credit)credit.textContent="실제 어종 사진 · Wikimedia/Wikipedia 제공 이미지";
-  };
-  probe.onerror=()=>{};
-  probe.src=photo;
- }catch(error){
-  // 오프라인, API 제한, 해당 어종 사진 없음 등의 경우 내장 일러스트를 유지합니다.
- }
+ host.innerHTML=fishFallbackMarkup(f);
+ const credit=$("fishPhotoCredit");
+ if(credit)credit.textContent="게임 내장 SVG 일러스트 사용 · 외부 사진 및 외부 이미지 API 미사용";
 }
 function openFishDetail(i){
  const f=fishData[i], fact=fishFacts[f.name];
@@ -575,7 +530,7 @@ function openFishDetail(i){
  ${image}
  <h2 style="margin:14px 0 4px;color:#123b55">${f.name}</h2>
  <div class="detail-meta"><span class="detail-chip">${f.rarity}</span><span class="detail-chip">${discovered[i]?"발견 완료":"도감 미발견 · 미리보기"}</span><span class="detail-chip">현재 ${inventory[i]}마리 보유</span></div>
- <div id="fishPhotoCredit" class="detail-credit">실제 사진을 불러오는 중입니다. 연결되지 않으면 내장 일러스트가 계속 표시됩니다.</div>
+ <div id="fishPhotoCredit" class="detail-credit">게임 내장 SVG 일러스트 사용 · 외부 사진 및 외부 이미지 API 미사용</div>
  <div class="detail-section"><h4>학명</h4><p><i>${fact[0]}</i></p></div>
  <div class="detail-section"><h4>서식 환경</h4><p>${fact[1]}</p></div>
  <div class="detail-section"><h4>생김새와 특징</h4><p>${fact[2]}</p></div>
